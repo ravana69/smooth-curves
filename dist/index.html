@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Smooth curves</title>
+  <link rel="stylesheet" href="./style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<canvas></canvas>
+<script id="sv" type="x-shader/x-vertex">
+        attribute vec4 vPosition;
+        void main (void) {
+            gl_Position = vPosition;
+        }
+    </script>
+
+<script id="sf" type="x-shader/x-fragment">
+        precision mediump float;
+
+        uniform float time;
+        uniform vec2 resolution;
+
+        void main(void) {
+            vec2 q = gl_FragCoord.xy / resolution.xy;
+            vec2 p = -1.0 + 2.0 * q;
+            p.x *= resolution.x / resolution.y;
+
+            float v = p.x + cos(time + p.y);
+            vec3 col = vec3(0.1 * max(0.0, p.y), 0.1 * max(0.0, p.x), 0.2 * max(0.0, p.x)) / abs(v * 2.0);
+            gl_FragColor = vec4(col, 1.0);
+        }
+</script>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>
